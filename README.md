@@ -3,7 +3,7 @@ This is my submission for the assignment given by the Community Of Coders (COC) 
 
 
 # Important parameters that seem to be working well :
-1. Accuracy      = 1.10069206551
+1. Error         = 1.10069206551
 2. Learning Rate = 2e-6
 3. EPOCHS        = 600000
 
