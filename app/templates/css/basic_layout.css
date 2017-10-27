@@ -1,0 +1,32 @@
+body {
+	min-height: 800px;
+	overflow-x: hidden;
+}
+
+h1.heading {
+	text-align: center;
+	color: #664033;
+	font-size: 5em;
+	padding-top: 1.1em;
+	padding-bottom: 1em;
+}
+
+.form {
+	float: right;
+	width: 35%;
+	border-radius: 1em;
+	margin-right: 5em;
+	padding: 2.5em;	
+	background-color: #e5e5cc;
+	font-size: 1em;
+
+}
+
+h1.form-heading {
+	text-align: center;
+	font-size : 2.7em;
+	letter-spacing: -0.03em;
+	font-family: monospace;
+	text-transform: uppercase;
+	
+}

@@ -25,6 +25,11 @@ MODEL_FILE = '../models/model1'
 def index():
     return render_template('index.html')
 
+@app.route('/plot.html')
+def plot():
+    return render_template('plot.html')
+
+
 @app.route('/get_models/<company>')
 def get_models(company):
     print "here "+company
