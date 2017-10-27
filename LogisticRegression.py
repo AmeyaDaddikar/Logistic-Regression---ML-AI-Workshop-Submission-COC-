@@ -6,8 +6,8 @@ from utility import * #custom methods for data cleaning
 
 FILE_NAME_TRAIN = 'Resources/train.csv' #replace this file name with the train file
 FILE_NAME_TEST = 'Resources/test.csv' #replace
-ALPHA = 3e-3
-EPOCHS = 10000#keep this greater than or equl to 5000 strictly otherwise you will get an error
+ALPHA = 7.9e-3
+EPOCHS = 50000#keep this greater than or equl to 5000 strictly otherwise you will get an error
 MODEL_FILE = 'models/model1'
 train_flag = False
 
@@ -48,8 +48,8 @@ def train(theta, X, y, model):
 	for i in range (0,EPOCHS):
 		#print str(i) + "\b\b\b\b"
 		predicted_y = predict(X,theta)
-		error_cost  = costFunc(m,y,predicted_y)
-		J.append(error_cost)
+		#error_cost  = costFunc(m,y,predicted_y)
+		#J.append(error_cost)
 		new_gradients = calcGradients(X,y,predicted_y,m)
 		theta = makeGradientUpdate(theta,new_gradients)
 
@@ -62,7 +62,8 @@ def train(theta, X, y, model):
 def costFunc(m,y,y_predicted):
 
 	log_h = np.log(y_predicted)
-	cost_arr = np.add(np.multiply(y,log_h),np.multiply(1-y,1-log_h))
+	one_minus_log_h = np.log(1-y_predicted)
+	cost_arr = np.add(np.multiply(y,log_h),np.multiply(1-y,one_minus_log_h))
 	cost = np.sum(cost_arr)
 	cost /= (-m)
 	return cost	

@@ -49,9 +49,11 @@ def normalizeTestData(X_df, y_df, model):
 def accuracy(X, y, model):
 
     y_predicted = predict(X,np.array(model['theta']))
+	
+    #print y_predicted
+
     y_predicted = np.floor(0.5 + y_predicted)
     
-    #print y_predicted
     #print "asdasddsa"
     numerator = np.sum(np.logical_not(np.logical_xor(y.astype(bool),y_predicted.astype(bool))))
     relative_error = numerator/(1.0*len(X))
