@@ -22,7 +22,7 @@ def accuracy(X, y, model):
     thetas = np.array(model['theta'],dtype=np.float128)
     print thetas
     y_predicted = predict(X,thetas)
-    y_predicted = np.floor(0.3 + y_predicted)
+    y_predicted = np.floor(0.5 + y_predicted)
     
     numerator = np.sum(np.logical_not(np.logical_xor(y.astype(bool),y_predicted.astype(bool))))
     relative_error = numerator/(1.0*len(X))
