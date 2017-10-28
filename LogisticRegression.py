@@ -1,4 +1,3 @@
-
 import numpy as np
 import logging
 import json
@@ -6,38 +5,34 @@ from utility import * #custom methods for data cleaning
 
 FILE_NAME_TRAIN = 'Resources/train.csv' #replace this file name with the train file
 FILE_NAME_TEST = 'Resources/test.csv' #replace
-ALPHA = 7.9e-3
-EPOCHS = 50000#keep this greater than or equl to 5000 strictly otherwise you will get an error
+ALPHA = 1e-4
+EPOCHS = 70000#keep this greater than or equl to 5000 strictly otherwise you will get an error
 MODEL_FILE = 'models/model1'
-train_flag = True
+train_flag = False
 
 logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
-np.set_printoptions(suppress=True)
-#################################################################################################
-#####################################write the functions here####################################
-#################################################################################################
+#np.set_printoptions(suppress=True)
+
+###########FUNCTIONS################################################################
+
 #this function appends 1 to the start of the input X and returns the new array
 def appendIntercept(X):
 	ones_vec = np.ones((X.shape[0],1))
 	return np.hstack((ones_vec,X))
     
-
-
-
-
- #intitial guess of parameters (intialize all to zero)
- #this func takes the number of parameters that is to be fitted and returns a vector of zeros
+#intitial guess of parameters (intialize all to zero)
+#this func takes the number of parameters that is to be fitted and returns a vector of zeros
 def initialGuess(n_thetas):
-	return np.zeros(n_thetas)
+	return np.zeros(n_thetas,dtype=np.float128)
 
 
 
 def train(theta, X, y, model):
 	m = len(y)
-     #your  gradient descent code goes here
-     #steps
-     #run you gd loop for EPOCHS that you have defined
+
+     #refer the following algorithm
+     #run gd loop for EPOCHS that you have defined
         #calculate the predicted y using your current value of theta
         # calculate cost with that current theta using the costFunc function
         #calculate your gradients values using calcGradients function
@@ -46,8 +41,10 @@ def train(theta, X, y, model):
 		predicted_y = predict(X,theta)
 		new_gradients = calcGradients(X,y,predicted_y,m)
 		theta = makeGradientUpdate(theta,new_gradients)
-		
-	model['theta'] = list(theta)
+
+	#Saves the thetas in the JSON file
+	model['theta'] = list(theta.astype(np.float64))
+	
 	return model
 
 	
@@ -61,6 +58,7 @@ def costFunc(m,y,y_predicted):
 	cost /= (-m)
 	return cost	
 
+#this function will calculate the gradient i.e. the difference in constFunc wrt theta
 def calcGradients(X,y,y_predicted,m):
 	difference = np.subtract(y_predicted,y)
 	difference = difference.values.reshape((X.shape[0],1))
@@ -68,22 +66,11 @@ def calcGradients(X,y,y_predicted,m):
 	summation = np.multiply(X,difference)
 	
 	return np.sum(summation,axis=0)/m
-    #apply the formula , this function will return cost with respect to the gradients
-    # basically an numpy array containing n_params
 
 #this function will update the theta and return it
 def makeGradientUpdate(theta, grads):
     return np.subtract(theta,ALPHA*grads)
-
-
-#this function will take two paramets as the input
-def predict(X,theta):
-	z =  np.dot(X,theta)
-	return sigmoid(z)
-
-def sigmoid(x):
-	return 1/(1 + np.exp(-x))
-
+    
 ########################main function###########################################
 def main():
     if(train_flag):
@@ -99,8 +86,7 @@ def main():
         model = {}
         with open(MODEL_FILE,'r') as f:
             model = json.loads(f.read())
-            X_df, y_df = loadData(FILE_NAME_TEST)
-            X,y = normalizeTestData(X_df, y_df, model)
+            X,y = loadData(FILE_NAME_TEST)
             X = appendIntercept(X)
             accuracy(X,y,model)
 

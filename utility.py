@@ -1,16 +1,8 @@
-
-
-import numpy as np
+#import statsmodels.api as sm
 import pandas as pd #not of your use
+import numpy as np
 import logging
 import json
-
-FILE_NAME_TRAIN = 'Resources/train.csv' #replace this file name with the train file
-FILE_NAME_TEST = 'Resources/test.csv' #replace
-ALPHA = 1e-3
-EPOCHS = 100000
-MODEL_FILE = 'models/model2'
-train_flag = True
 
 logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
@@ -26,9 +18,11 @@ def loadData(file_name):
     return X_df, y_df
 
 def accuracy(X, y, model):
-
-    y_predicted = predict(X,np.array(model['theta']))
-    y_predicted = np.floor(0.5 + y_predicted)
+    
+    thetas = np.array(model['theta'],dtype=np.float128)
+    print thetas
+    y_predicted = predict(X,thetas)
+    y_predicted = np.floor(0.3 + y_predicted)
     
     numerator = np.sum(np.logical_not(np.logical_xor(y.astype(bool),y_predicted.astype(bool))))
     relative_error = numerator/(1.0*len(X))
