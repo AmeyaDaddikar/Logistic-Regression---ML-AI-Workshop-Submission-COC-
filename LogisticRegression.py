@@ -9,7 +9,7 @@ FILE_NAME_TEST = 'Resources/test.csv' #replace
 ALPHA = 7.9e-3
 EPOCHS = 50000#keep this greater than or equl to 5000 strictly otherwise you will get an error
 MODEL_FILE = 'models/model1'
-train_flag = False
+train_flag = True
 
 logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
@@ -34,26 +34,19 @@ def initialGuess(n_thetas):
 
 
 def train(theta, X, y, model):
-	J = [] #this array should contain the cost for every iteration so that you can visualize it later when you plot it vs the ith iteration
-     #train for the number of epochs you have defined
 	m = len(y)
      #your  gradient descent code goes here
      #steps
      #run you gd loop for EPOCHS that you have defined
         #calculate the predicted y using your current value of theta
         # calculate cost with that current theta using the costFunc function
-        #append the above cost in J
         #calculate your gradients values using calcGradients function
         # update the theta using makeGradientUpdate function (don't make a new variable assign it back to theta that you received)
 	for i in range (0,EPOCHS):
-		#print str(i) + "\b\b\b\b"
 		predicted_y = predict(X,theta)
-		#error_cost  = costFunc(m,y,predicted_y)
-		#J.append(error_cost)
 		new_gradients = calcGradients(X,y,predicted_y,m)
 		theta = makeGradientUpdate(theta,new_gradients)
-
-	model['J'] = J
+		
 	model['theta'] = list(theta)
 	return model
 
@@ -95,8 +88,7 @@ def sigmoid(x):
 def main():
     if(train_flag):
         model = {}
-        X_df,y_df = loadData(FILE_NAME_TRAIN)
-        X,y, model = normalizeData(X_df, y_df, model)
+        X,y = loadData(FILE_NAME_TRAIN)
         X = appendIntercept(X)
         theta = initialGuess(X.shape[1])
         model = train(theta, X, y, model)

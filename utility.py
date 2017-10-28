@@ -25,48 +25,17 @@ def loadData(file_name):
     
     return X_df, y_df
 
-
-def normalizeData(X_df, y_df, model):
-    #save the scaling factors so that after prediction the value can be again rescaled
-    model['input_scaling_factors'] = [list(X_df.mean()),list(X_df.std())]
-    #model['output_scaling_factors'] = [y_df.mean(), y_df.std()]
-    X = np.array((X_df-X_df.mean())/X_df.std())
-    #y = np.array((y_df - y_df.mean())/y_df.std())
-    return X, y_df, model
-
-def normalizeTestData(X_df, y_df, model):
-    meanX = model['input_scaling_factors'][0]
-    stdX = model['input_scaling_factors'][1]
-    #meany = model['output_scaling_factors'][0]
-    #stdy = model['output_scaling_factors'][1]
-
-    X = 1.0*(X_df - meanX)/stdX
-    #y = 1.0*(y_df - meany)/stdy
-
-    return X, y_df
-
-
 def accuracy(X, y, model):
 
     y_predicted = predict(X,np.array(model['theta']))
-	
-    #print y_predicted
-
     y_predicted = np.floor(0.5 + y_predicted)
     
-    #print "asdasddsa"
     numerator = np.sum(np.logical_not(np.logical_xor(y.astype(bool),y_predicted.astype(bool))))
     relative_error = numerator/(1.0*len(X))
     acc = relative_error * 100.0
-    #acc = np.sqrt(1.0*(np.sum(np.square(y_predicted - y)))/len(X))
-
-    #print y.astype(bool)
-    #print y_predicted.astype(bool)
-	
+    
     print "Accuracy associated with this model is "+str(acc)
 
-#def predict(X,theta):
-#    return np.dot(X,theta)
 def predict(X,theta):
 	z =  np.dot(X,theta)
 	return sigmoid(z)

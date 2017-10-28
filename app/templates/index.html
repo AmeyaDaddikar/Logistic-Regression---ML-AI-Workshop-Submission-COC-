@@ -7,13 +7,18 @@
 		<meta charset="utf-8"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
+		<!--[if lt IE 9]>
+      		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    	<![endif]-->
+	
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/basic_layout.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="jquery-3.2.1.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="script/HomepageForm.js"></script>
 	</head>
 	
@@ -24,58 +29,76 @@
 			</div>
 		</div>
 		
-		<div class="form" align="right">
-			<h1 class="form-heading">Fill your details</h1>
+		<div class="row">
+			<div id="form-div" align="right">
+				<h1 class="form-heading">Fill your details</h1>
 			
-			<form action="http://127.0.0.1:5000/predict" method="post">
-				<div class="form-group">
-    				<label for="email">Your name</label>
-    				<input type="text" class="form-control" id="text">
-    				<label for="selectBrand">Brand</label>
-					  <select class="form-control id="selectBrand">
-						<option>Iphone</option>
-						<option>Samsung</option>
-						<option>Xiaomi</option>
-						<option>Motorola</option>
-						<option>OnePlus</option>
-					  </select>
+				<form action="http://127.0.0.1:5000/predict" method="post">
+					<div class="form-group">
+						<!--
+						removed temporarily for debugging
+						<label for="id">Your name</label>
+						<input type="text" class="form-control" id="text">
+						-->
+						
+						<label for="company">Company</label>
+						  <select class="form-control id="company">
+						  	<option value="0" selected="selected">----------Select one Company----</option>
+							<option value="Apple">Apple</option>
+                   			<option value="Motorola">Motorola</option>
+					        <option value="OnePlus">OnePlus</option>
+					        <option value="Samsung">Samsung</option>
+					        <option value="Xiaomi">Xiaomi</option>
+						  </select>
 					
-					<label for="selectModel">Model</label>
-					  <select class="form-control id="selectModel">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					  </select>
+						<label for="models">Model</label>
+						  <select class="form-control id="models">
+							<option  selected="selected" >-------Select one model------------</option>
+						  </select>
 					
-					<label for="monthsUsed">Approximate Usage (in months)</label>
-					<input type="text" class="form-control" id="monthsUsed">  
-                	
-                	<label for="selectIssue">Issues</label>
-					  <select class="form-control id="selectIssue">
-						<option>None</option>
-						<option>Hang</option>
-						<option>Battery</option>
-						<option>Hang+Battery</option>
-						<option>Microphones</option>
-						<option>Battery+Microphones</option>
-						<option>Hang+Microphones</option>
-						<option>Hang+Wifi</option>
-						<option>Wifi+Microphones</option>
-					  </select>
-					  
-					<label for="selectPrice">Expected Price</label>
-					<input type="text" class="form-control" id="selectPrice">  
+						<label for="months">Approximate Usage (in months)</label>
+						<input type="number" class="form-control" id="months">  
+		            	
+		            	<label for="issue">Issues</label>
+						  <select class="form-control id="issue">
+						  	<option  selected="selected">------Select Issues-------</option>
+							<option >None</option>
+				            <option >Hang</option>
+				            <option >Battery</option>
+				            <option >Hang+Battery</option>
+				            <option >Microphones</option>
+				            <option >Battery+Microphones</option>
+				            <option >Hang+Microphones</option>
+				            <option >Hang+Wifi</option>
+				            <option >Wifi+Microphones</option>
+						  </select>
+						
+						<label for="purchase_price">Purchase Price</label>
+						<input type="number" class="form-control" id="purchase_price">  
+						  
+						<label for="expected_price">Expected Price</label>
+						<input type="number" class="form-control" id="expected_price">  
 					
-					<br/>
-					<button type="submit" value="submit" class="btn btn-primary">Submit</button>
+						<br/>
+						<button type="submit" value="submit" class="btn btn-primary">Submit</button>
 					
-				</div>
-			</form>
+					</div>
+				</form>
 			
+			</div>
 		</div>
-	
+			
+		<div id="footer-div" class="container-fluid">
+   			 <div class="row" id="footer">
+   			 	<span class="label label-default">
+   			 		<a href="https://www.facebook.com/CommunityOfCoders/">The Community of Coders</a><i class="fa fa-facebook"></i>
+   			 	</span>&nbsp;&nbsp;&nbsp;
+   			 	<span class="label label-default">
+	   			 	<a href="https://github.com/AmeyaDaddikar">My Github</a><i class="fa fa-github"></i>
+				</span>
+   			 </div>
+		</div>
+		
 	</body>
 		
 </html>

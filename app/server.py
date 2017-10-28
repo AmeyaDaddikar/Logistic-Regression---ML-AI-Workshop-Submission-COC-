@@ -34,10 +34,13 @@ def get_models(company):
 @app.route('/predict', methods=['GET','POST'])
 def predict():
     data = dict(request.form)
-    company = data['company'][0]
-    issue = data['issue'][0]
-    phoneModel = data['model'][0]
-    boughtAt = int(data['boughtAt'][0])
+    
+    company = COMPANY_RATING[data['company'][0]]
+    issue   = ISSUE_RATING[data['issue'][0]]
+    model   = MODEL_RATING[data['model'][0]]
+    monthsUsed = int(data['months'][0])
+    purchase_price = int(data['purchase_price'][0])
+    expected_price = int(data['expected_price'][0])
     # company = 'Apple'
     # issue = 'Battery'
     # phoneModel = 'Iphone 6'
@@ -47,21 +50,24 @@ def predict():
         model = json.loads(f.read())
         theta = model['theta']
     meanIn,stdDevIn = model['input_scaling_factors'][0],model['input_scaling_factors'][1]
-    overallRating = int(COMPANY_RATING[company]) * int(MODEL_RATING[phoneModel])
-    issueRating = ISSUE_RATING[issue]
-    months = [3,6,9,12,15,18,24]
+    
+    #company_rating,model_rating,bought_at,months_used,issues_rating,resale_value,output -- order of data
+    #overallRating = int(COMPANY_RATING[company]) * int(MODEL_RATING[phoneModel])
+    #months = [3,6,9,12,15,18,24]
+    Commented out because it isn't needed for logistic regression
     passingX = []
-    for x in months:
-        temp=[1]
-        scaledFeature = (overallRating-meanIn[0])/stdDevIn[0]
-        temp.append(scaledFeature)
-        scaledFeature = (boughtAt-meanIn[1])/stdDevIn[1]
-        temp.append(scaledFeature)
-        scaledFeature = (x-meanIn[2])/stdDevIn[2]
-        temp.append(scaledFeature)
-        scaledFeature = (issueRating-meanIn[3])/stdDevIn[3]
-        temp.append(scaledFeature)
-        passingX.append(temp)
+    
+    temp=[1]
+    scaledFeature = (overallRating-meanIn[0])/stdDevIn[0]
+    temp.append(scaledFeature)
+    scaledFeature = (boughtAt-meanIn[1])/stdDevIn[1]
+    temp.append(scaledFeature)
+    scaledFeature = (x-meanIn[2])/stdDevIn[2]
+    temp.append(scaledFeature)
+    scaledFeature = (issueRating-meanIn[3])/stdDevIn[3]
+    temp.append(scaledFeature)
+    passingX.append(temp)
+    
     print passingX
     predictedY = np.dot(passingX,theta)
     scaledY = []
@@ -70,6 +76,7 @@ def predict():
     for x in predictedY:
         scaledY.append(floor(x*stdDevOut+meanOut))
     print scaledY
+    
     dataList={}
     dataList['company']=company
     dataList['phoneModel']=phoneModel
