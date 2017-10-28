@@ -3,12 +3,12 @@ import logging
 import json
 from utility import * #custom methods for data cleaning
 
-FILE_NAME_TRAIN = 'Resources/train.csv' #replace this file name with the train file
-FILE_NAME_TEST = 'Resources/test.csv' #replace
-ALPHA = 1e-4
-EPOCHS = 70000#keep this greater than or equl to 5000 strictly otherwise you will get an error
+FILE_NAME_TRAIN = 'Resources/combined_test.csv' #replace this file name with the train file
+FILE_NAME_TEST = 'Resources/train.csv' #replace
+ALPHA = 1e-3
+EPOCHS = 10000#keep this greater than or equl to 5000 strictly otherwise you will get an error
 MODEL_FILE = 'models/model1'
-train_flag = False
+train_flag = True
 
 logging.basicConfig(filename='output.log',level=logging.DEBUG)
 
@@ -37,13 +37,17 @@ def train(theta, X, y, model):
         # calculate cost with that current theta using the costFunc function
         #calculate your gradients values using calcGradients function
         # update the theta using makeGradientUpdate function (don't make a new variable assign it back to theta that you received)
+	'''
 	for i in range (0,EPOCHS):
 		predicted_y = predict(X,theta)
 		new_gradients = calcGradients(X,y,predicted_y,m)
 		theta = makeGradientUpdate(theta,new_gradients)
-
+	'''
+	logit_mod = sm.Logit(y, X)
+	logit_res = logit_mod.fit(disp=0)
+	print('Parameters: ', logit_res.params)
 	#Saves the thetas in the JSON file
-	model['theta'] = list(theta.astype(np.float64))
+	model['theta'] = list(logit_res.params)
 	
 	return model
 
@@ -73,7 +77,8 @@ def makeGradientUpdate(theta, grads):
     
 ########################main function###########################################
 def main():
-    if(train_flag):
+    #if(train_flag):
+    	print FILE_NAME_TRAIN
         model = {}
         X,y = loadData(FILE_NAME_TRAIN)
         X = appendIntercept(X)
@@ -82,7 +87,7 @@ def main():
         with open(MODEL_FILE,'w') as f:
             f.write(json.dumps(model))
 
-    else:
+    #else:
         model = {}
         with open(MODEL_FILE,'r') as f:
             model = json.loads(f.read())
