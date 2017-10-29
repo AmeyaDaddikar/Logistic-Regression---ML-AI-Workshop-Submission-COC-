@@ -37,8 +37,7 @@ In a nutshell, the homepage has a form wherein the user can put the various char
 
 ### Issues,drawbacks, and shortcomings
 
-1. Since the data isn't normalized, I assume, even if the accuracy is 100%, the model might not work for other real life cases. I might be wrong on this though, and my broken IPhone 6 really didn't deserve 20k that Apple was providing xdxd.
-2. This is more focused on learning to integrate flask rather than Logistic Regression. My other branch is more focused on the implementation of the Logit Regression.
-3. The webpages are not responsive, i.e. they won't look good at all on devices with smaller screens.
-4. The web-app sends and receives data in simplistic form. i.e. no fancy features like graphs are used.
+1. This is more focused on learning to integrate flask rather than Logistic Regression. My other branch is more focused on the implementation of the Logit Regression.
+2. The webpages are not responsive, i.e. they won't look good at all on devices with smaller screens.
+3. The web-app sends and receives data in simplistic form. i.e. no fancy features like graphs are used.
 
