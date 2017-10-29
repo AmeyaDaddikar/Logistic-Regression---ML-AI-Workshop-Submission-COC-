@@ -12,14 +12,15 @@
     	<![endif]-->
 	
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/basic_layout.css">
+		<link rel="stylesheet" href="../static/css/basic_layout.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="script/HomepageForm.js"></script>
+		<script src="../static/script/HomepageForm.js"></script>
+		
 	</head>
 	
 	<body background="../static/assets/images/background1.jpeg">
@@ -42,7 +43,7 @@
 						-->
 						
 						<label for="company">Company</label>
-						  <select class="form-control id="company">
+						  <select class="form-control" name="company" id="company">
 						  	<option value="0" selected="selected">----------Select one Company----</option>
 							<option value="Apple">Apple</option>
                    			<option value="Motorola">Motorola</option>
@@ -52,15 +53,15 @@
 						  </select>
 					
 						<label for="models">Model</label>
-						  <select class="form-control id="models">
+						  <select class="form-control" name="model" id="models">
 							<option  selected="selected" >-------Select one model------------</option>
 						  </select>
 					
 						<label for="months">Approximate Usage (in months)</label>
-						<input type="number" class="form-control" id="months">  
+						<input type="number" class="form-control" name="months" id="months">  
 		            	
 		            	<label for="issue">Issues</label>
-						  <select class="form-control id="issue">
+						  <select class="form-control" name="issue" id="issue">
 						  	<option  selected="selected">------Select Issues-------</option>
 							<option >None</option>
 				            <option >Hang</option>
@@ -74,10 +75,10 @@
 						  </select>
 						
 						<label for="purchase_price">Purchase Price</label>
-						<input type="number" class="form-control" id="purchase_price">  
+						<input type="number" class="form-control" name="purchase_price" id="purchase_price">  
 						  
 						<label for="expected_price">Expected Price</label>
-						<input type="number" class="form-control" id="expected_price">  
+						<input type="number" class="form-control" name="expected_price" id="expected_price">  
 					
 						<br/>
 						<button type="submit" value="submit" class="btn btn-primary">Submit</button>

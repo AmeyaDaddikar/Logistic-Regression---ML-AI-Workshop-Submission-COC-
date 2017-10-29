@@ -1,18 +1,10 @@
-
-
 import numpy as np
 import pandas as pd #not of your use
 import logging
 import json
 
-FILE_NAME_TRAIN = 'Resources/train.csv' #replace this file name with the train file
-FILE_NAME_TEST = 'Resources/test.csv' #replace
-ALPHA = 1e-3
-EPOCHS = 100000
-MODEL_FILE = 'models/model2'
-train_flag = True
 
-logging.basicConfig(filename='output.log',level=logging.DEBUG)
+logging.basicConfig(filename='log/output.log',level=logging.DEBUG)
 
 
 #utility functions
@@ -25,6 +17,23 @@ def loadData(file_name):
     
     return X_df, y_df
 
+
+def normalizeData(X_df, y_df, model):
+    #save the scaling factors so that after prediction the value can be again rescaled
+    model['input_scaling_factors'] = [list(X_df.mean()),list(X_df.std())]
+    X = np.array((X_df-X_df.mean())/X_df.std())
+    
+    return X, y_df, model
+
+def normalizeTestData(X_df, y_df, model):
+    meanX = model['input_scaling_factors'][0]
+    stdX = model['input_scaling_factors'][1]
+
+    X = 1.0*(X_df - meanX)/stdX
+
+    return X, y_df
+
+
 def accuracy(X, y, model):
 
     y_predicted = predict(X,np.array(model['theta']))
@@ -33,7 +42,7 @@ def accuracy(X, y, model):
     numerator = np.sum(np.logical_not(np.logical_xor(y.astype(bool),y_predicted.astype(bool))))
     relative_error = numerator/(1.0*len(X))
     acc = relative_error * 100.0
-    
+	
     print "Accuracy associated with this model is "+str(acc)
 
 def predict(X,theta):
