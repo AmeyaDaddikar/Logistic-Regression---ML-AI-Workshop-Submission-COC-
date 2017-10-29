@@ -4,7 +4,7 @@
 
 This is my submission for the assignment given by the Community Of Coders (COC) on the topic of logistic regression.
 
-Checkout my [other repository](https://github.com/AmeyaDaddikar/Logistic-Regression---ML-AI-Workshop-Submission-COC-/tree/fixed_alpha) to see my implementation of the cost function with fixed ALPHA and fixed EPOCHS.
+Checkout my [other branch](https://github.com/AmeyaDaddikar/Logistic-Regression---ML-AI-Workshop-Submission-COC-/tree/fixed_alpha) to see my implementation of the cost function with fixed ALPHA and fixed EPOCHS.
 
 
 # Important parameters that seem to be working well :
