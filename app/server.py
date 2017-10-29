@@ -60,14 +60,17 @@ def predict():
         theta = model['theta']
     
     #ORDER OF DATA :company_rating,model_rating,bought_at,months_used,issues_rating,resale_value,output 
-
-	X = [1]
-    X.append(company)
-    X.append(phone_model)
-    X.append(purchase_price)
-    X.append(monthsUsed)
-    X.append(issue)
-    X.append(expected_price)
+    
+    meanX = model['input_scaling_factors'][0]
+    stdX  = model['input_scaling_factors'][1]
+    
+    X = [1]
+    X.append((company-meanX[0])/stdX[0])
+    X.append((phone_model-meanX[1])/stdX[1])
+    X.append((purchase_price-meanX[2])/stdX[2])
+    X.append((monthsUsed-meanX[3])/stdX[3])
+    X.append((issue-meanX[4])/stdX[4])
+    X.append((expected_price-meanX[5])/stdX[5])
     
     #Test data that is expected to give output as 1
     #X = [1,4,4,17076,3,3,10137]
