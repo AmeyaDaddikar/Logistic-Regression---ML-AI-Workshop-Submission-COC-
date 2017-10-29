@@ -13,19 +13,19 @@ Checkout my [other repository](#repository) to see my implementation of the cost
 3. EPOCHS        = N.A.
 
 I had to use the API , because removing the NormalizeData function, the code began to throw RuntimeErrors and saw significant dips in accuracy. Folliwng is my Train function
+
 '''python
-def train(X, y, model):
-	m = len(y)
 
-	logit_mod = sm.Logit(y, X)
-	logit_res = logit_mod.fit(disp=0)
-	
-	#Saves the thetas in the JSON file
-	model['theta'] = list(logit_res.params)
-	
-	return model
+	def train(X, y, model):
+
+		m = len(y)
+		logit_mod = sm.Logit(y, X)
+
+		logit_res = logit_mod.fit(disp=0)
+		#Saves the thetas in the JSON file
+		model['theta'] = list(logit_res.params)
+		return model
 '''
-
 
 I also took the liberty to merge the [Test File](data/test.csv) and the [Train File](data/test.csv) to create a [New training file](/data/combined_test.csv) which ensured that the model completely learns the expected behaviour.
 
