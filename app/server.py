@@ -35,13 +35,18 @@ def get_models(company):
 def predict():
     data = dict(request.form)
     
-    company = int(COMPANY_RATING[data['company'][0]])
+    company_name = data['company'][0]
+    company = int(COMPANY_RATING[company_name])
+    
     issue   = int(ISSUE_RATING[data['issue'][0]])
-    phone_model   = int(MODEL_RATING[data['model'][0]])
+    
+    model_name = data['model'][0]
+    phone_model   = int(MODEL_RATING[model_name])
+
     monthsUsed = int(data['months'][0])
     purchase_price = int(data['purchase_price'][0])
     expected_price = int(data['expected_price'][0])
-    
+     
     print company
     print issue
     print phone_model
@@ -71,22 +76,24 @@ def predict():
     predictedY = 1/(1 + exp(-z))
     
     if predictedY > 0.5:
-    	predictedY = 1
+    	predictedY = 'YES'
     else:
-    	predictedY = 0
+    	predictedY = 'NO'
     
     print predictedY	
     
     dataList={}
-    dataList['company']=company
-    dataList['phoneModel']=model
+    dataList['company']=company_name
+    dataList['phoneModel']=model_name
     dataList['issue']=issue
+    dataList['purchase_price']=purchase_price
     dataList['expected_price']=expected_price
     dataList['predictedY'] = predictedY
     
-    return '<html>PREDICTED' + str(predictedY) + '</html>'
-    #return predictedY
-    #return render_template('predictedValues.html',dataList=dataList)
+    #for debugging
+    #return '<html>PREDICTED' + str(predictedY) + '</html>'
+    
+    return render_template('result.html',dataList=dataList)
 
 
 if __name__ == '__main__':
