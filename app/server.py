@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 import json
 from flask_cors import CORS
 import numpy as np
-from math import floor
+from math import exp
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +19,7 @@ MODEL_RATING ={'Iphone 4':2,'Iphone 4s':3,'Iphone 5':3.5,'Iphone 5s':4,'Iphone 6
                 'Redmi 1s':2,'Redmi 2':3,'Redmi Note 3':5,
                 'Galaxy y':2, 'Galaxy Win':3, 'Galaxy S2':5,'Grand 2':4, 'Galaxy Ace':2,'Galaxy Y':2}
 
-MODEL_FILE = '../models/model1'
+MODEL_FILE = '../models/final_model'
 
 @app.route('/')
 def index():
@@ -35,68 +35,59 @@ def get_models(company):
 def predict():
     data = dict(request.form)
     
-    company = COMPANY_RATING[data['company'][0]]
-    issue   = ISSUE_RATING[data['issue'][0]]
-    model   = MODEL_RATING[data['model'][0]]
+    company = int(COMPANY_RATING[data['company'][0]])
+    issue   = int(ISSUE_RATING[data['issue'][0]])
+    phone_model   = int(MODEL_RATING[data['model'][0]])
     monthsUsed = int(data['months'][0])
     purchase_price = int(data['purchase_price'][0])
     expected_price = int(data['expected_price'][0])
-    # company = 'Apple'
-    # issue = 'Battery'
-    # phoneModel = 'Iphone 6'
-    # boughtAt = 12345
+    
+    print company
+    print issue
+    print phone_model
+    print monthsUsed
+    print purchase_price
+    print expected_price
+    
     theta = []
     with open(MODEL_FILE,'r') as f:
         model = json.loads(f.read())
         theta = model['theta']
-    meanIn,stdDevIn = model['input_scaling_factors'][0],model['input_scaling_factors'][1]
     
-    #company_rating,model_rating,bought_at,months_used,issues_rating,resale_value,output -- order of data
-    #overallRating = int(COMPANY_RATING[company]) * int(MODEL_RATING[phoneModel])
-    #months = [3,6,9,12,15,18,24]
-    Commented out because it isn't needed for logistic regression
-    passingX = []
+    #ORDER OF DATA :company_rating,model_rating,bought_at,months_used,issues_rating,resale_value,output 
+
+	X = [1]
+    X.append(company)
+    X.append(phone_model)
+    X.append(purchase_price)
+    X.append(monthsUsed)
+    X.append(issue)
+    X.append(expected_price)
     
-    temp=[1]
-    scaledFeature = (overallRating-meanIn[0])/stdDevIn[0]
-    temp.append(scaledFeature)
-    scaledFeature = (boughtAt-meanIn[1])/stdDevIn[1]
-    temp.append(scaledFeature)
-    scaledFeature = (x-meanIn[2])/stdDevIn[2]
-    temp.append(scaledFeature)
-    scaledFeature = (issueRating-meanIn[3])/stdDevIn[3]
-    temp.append(scaledFeature)
-    passingX.append(temp)
+    #Test data that is expected to give output as 1
+    #X = [1,4,4,17076,3,3,10137]
     
-    print passingX
-    predictedY = np.dot(passingX,theta)
-    scaledY = []
-    meanOut = model['output_scaling_factors'][0]
-    stdDevOut = model['output_scaling_factors'][1]
-    for x in predictedY:
-        scaledY.append(floor(x*stdDevOut+meanOut))
-    print scaledY
+    z = np.sum(np.multiply(X,theta))
+    predictedY = 1/(1 + exp(-z))
+    
+    if predictedY > 0.5:
+    	predictedY = 1
+    else:
+    	predictedY = 0
+    
+    print predictedY	
     
     dataList={}
     dataList['company']=company
-    dataList['phoneModel']=phoneModel
+    dataList['phoneModel']=model
     dataList['issue']=issue
-    dataList['predictedY'] = scaledY
-    return render_template('predictedValues.html',dataList=dataList)
+    dataList['expected_price']=expected_price
+    dataList['predictedY'] = predictedY
+    
+    return '<html>PREDICTED' + str(predictedY) + '</html>'
+    #return predictedY
+    #return render_template('predictedValues.html',dataList=dataList)
 
-@app.route('/plotError')
-def plotError():
-    send = {}
-    J = []
-    with open(MODEL_FILE,'r') as f:
-        model = json.loads(f.read())
-        J = model['J']
-        if(len(J)>=5000):
-            J = J[:5000]
-        else:
-            print "error"
-    send["J"] = J
-    return json.dumps(send)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
